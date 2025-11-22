@@ -1,0 +1,57 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ category.name }} - Admin{% endblock %}
+
+{% block page_title %}Détails de la catégorie{% endblock %}
+
+{% block body %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">{{ category.name }}</h5>
+        <div>
+            <a href="{{ path('admin_category_edit', {'id': category.id}) }}" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Modifier
+            </a>
+            <a href="{{ path('admin_category_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th style="width: 200px;">ID</th>
+                    <td>{{ category.id }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ category.name }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ category.description ?? 'Aucune description' }}</td>
+                </tr>
+                <tr>
+                    <th>Nombre de projets</th>
+                    <td><span class="badge bg-info">{{ category.projects|length }}</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        {% if category.projects %}
+            <h6 class="mt-4">Projets associés</h6>
+            <ul class="list-group">
+                {% for project in category.projects %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ project.title }}
+                        <a href="{{ path('admin_project_show', {'id': project.id}) }}" class="btn btn-sm btn-info">
+                            Voir
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

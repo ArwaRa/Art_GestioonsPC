@@ -1,0 +1,42 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Artistes - Admin{% endblock %}
+{% block page_title %}Gestion des artistes{% endblock %}
+
+{% block body %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Liste des artistes</h5>
+        <a href="{{ path('admin_artist_new') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Nouvel artiste</a>
+    </div>
+    <div class="card-body">
+        {% if artists %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead><tr><th>ID</th><th>Nom</th><th>Email</th><th>Projets</th><th>Actions</th></tr></thead>
+                    <tbody>
+                        {% for artist in artists %}
+                            <tr>
+                                <td>{{ artist.id }}</td>
+                                <td><strong>{{ artist.name }}</strong></td>
+                                <td>{{ artist.email ?? '-' }}</td>
+                                <td><span class="badge bg-info">{{ artist.projects|length }}</span></td>
+                                <td>
+                                    <a href="{{ path('admin_artist_show', {'id': artist.id}) }}" class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                    <a href="{{ path('admin_artist_edit', {'id': artist.id}) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                    <form method="post" action="{{ path('admin_artist_delete', {'id': artist.id}) }}" style="display: inline-block;" onsubmit="return confirm('Êtes-vous sûr ?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ artist.id) }}">
+                                        <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-center text-muted">Aucun artiste pour le moment.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

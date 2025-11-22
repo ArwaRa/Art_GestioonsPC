@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Projets - ArtConnect{% endblock %}
+
+{% block body %}
+<div class="hero-section text-center" style="padding: 60px 0;">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3">
+            <i class="fas fa-folder-open"></i> Galerie de Projets
+        </h1>
+        <p class="lead">
+            Explorez notre collection de projets artistiques uniques
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-filter"></i> Filtrer par catégorie</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{{ path('project_index') }}"
+                           class="btn {{ selected_category is null ? 'btn-primary' : 'btn-outline-primary' }}">
+                            Toutes les catégories
+                        </a>
+                        {% for category in categories %}
+                            <a href="{{ path('project_index', {'category': category.id}) }}"
+                               class="btn {{ selected_category and selected_category.id == category.id ? 'btn-primary' : 'btn-outline-primary' }}">
+                                {{ category.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if selected_category %}
+        <div class="alert alert-info">
+            <i class="fas fa-filter"></i> Affichage des projets de la catégorie: <strong>{{ selected_category.name }}</strong>
+            <a href="{{ path('project_index') }}" class="btn btn-sm btn-outline-info ms-2">
+                <i class="fas fa-times"></i> Effacer le filtre
+            </a>
+        </div>
+    {% endif %}
+
+    {% if projects %}
+        <div class="row g-4">
+            {% for project in projects %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        {% if project.image %}
+                            <img src="{{ asset('uploads/projects/' ~ project.image) }}"
+                                 class="card-img-top"
+                                 alt="{{ project.title }}">
+                        {% else %}
+                            <div class="card-img-top bg-gradient" style="background: linear-gradient(135deg, #1d3ed4 0%, #1014f2 100%); height: 250px; display: flex; align-items: center; justify-content: center; color: white;">
+                                <i class="fas fa-image fa-4x"></i>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ project.title }}</h5>
+                            <p class="card-text">
+                                <i class="fas fa-user text-primary"></i>
+                                <a href="{{ path('artist_show', {'id': project.artist.id}) }}" class="text-decoration-none">
+                                    {{ project.artist.name }}
+                                </a>
+                            </p>
+                            <p class="card-text">
+                                {{ project.description|slice(0, 120) }}{{ project.description|length > 120 ? '...' : '' }}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-primary">{{ project.category.name }}</span>
+                                <small class="text-muted">{{ project.createdAt|date('d/m/Y') }}</small>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="{{ path('project_show', {'id': project.id}) }}" class="btn btn-primary w-100">
+                                <i class="fas fa-eye"></i> Voir les détails
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            <i class="fas fa-exclamation-triangle"></i> Aucun projet trouvé dans cette catégorie.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

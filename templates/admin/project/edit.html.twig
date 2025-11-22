@@ -1,0 +1,28 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Modifier {{ project.title }} - Admin{% endblock %}
+{% block page_title %}Modifier le projet{% endblock %}
+
+{% block body %}
+<div class="card">
+    <div class="card-header"><h5 class="mb-0">Modifier: {{ project.title }}</h5></div>
+    <div class="card-body">
+        {% if project.image %}
+            <div class="mb-3 text-center">
+                <img src="{{ asset('uploads/projects/' ~ project.image) }}" alt="{{ project.title }}" class="img-thumbnail" style="max-width: 300px;">
+            </div>
+        {% endif %}
+        {{ form_start(form) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.category) }}
+            {{ form_row(form.artist) }}
+            {{ form_row(form.imageFile, {'help': 'Laissez vide pour conserver l\'image actuelle'}) }}
+            <div class="d-flex justify-content-between mt-3">
+                <a href="{{ path('admin_project_index') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Retour</a>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Enregistrer</button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}
