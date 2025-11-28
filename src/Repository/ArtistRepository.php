@@ -28,7 +28,7 @@ class ArtistRepository extends ServiceEntityRepository
     }
 
     /**
-     * Find featured artists with projects
+     * les artistes b les projets
      */
     public function findFeaturedArtists(int $limit = 6): array
     {

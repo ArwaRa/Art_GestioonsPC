@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[Route('/admin/artist', name: 'admin_artist_')]
 class AdminArtistController extends AbstractController
@@ -32,9 +33,9 @@ class AdminArtistController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Handle file upload
             $profileImageFile = $form->get('profileImageFile')->getData();
-            if ($profileImageFile) {
+
+            if ($profileImageFile instanceof UploadedFile) {
                 $originalFilename = pathinfo($profileImageFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$profileImageFile->guessExtension();
@@ -64,14 +65,6 @@ class AdminArtistController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'show', methods: ['GET'])]
-    public function show(Artist $artist): Response
-    {
-        return $this->render('admin/artist/show.html.twig', [
-            'artist' => $artist,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Artist $artist, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
@@ -79,9 +72,9 @@ class AdminArtistController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Handle file upload
             $profileImageFile = $form->get('profileImageFile')->getData();
-            if ($profileImageFile) {
+
+            if ($profileImageFile instanceof UploadedFile) {
                 $originalFilename = pathinfo($profileImageFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$profileImageFile->guessExtension();
@@ -92,7 +85,6 @@ class AdminArtistController extends AbstractController
                         $newFilename
                     );
 
-                    // Delete old file if exists
                     if ($artist->getProfileImage()) {
                         $oldFile = $this->getParameter('kernel.project_dir').'/public/uploads/artists/'.$artist->getProfileImage();
                         if (file_exists($oldFile)) {
@@ -123,7 +115,6 @@ class AdminArtistController extends AbstractController
     public function delete(Request $request, Artist $artist, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$artist->getId(), $request->request->get('_token'))) {
-            // Delete profile image if exists
             if ($artist->getProfileImage()) {
                 $imageFile = $this->getParameter('kernel.project_dir').'/public/uploads/artists/'.$artist->getProfileImage();
                 if (file_exists($imageFile)) {
@@ -138,5 +129,13 @@ class AdminArtistController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_artist_index');
+    }
+
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
+    public function show(Artist $artist): Response
+    {
+        return $this->render('admin/artist/show.html.twig', [
+            'artist' => $artist,
+        ]);
     }
 }
