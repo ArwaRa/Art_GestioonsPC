@@ -22,9 +22,8 @@ class ProjectRepository extends ServiceEntityRepository
     public function findAllOrdered(): array
     {
         return $this->createQueryBuilder('p')
-            ->leftJoin('p.artist', 'a')
             ->leftJoin('p.category', 'c')
-            ->addSelect('a', 'c')
+            ->addSelect('c')
             ->orderBy('p.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
@@ -36,9 +35,8 @@ class ProjectRepository extends ServiceEntityRepository
     public function findRecent(int $limit = 12): array
     {
         return $this->createQueryBuilder('p')
-            ->leftJoin('p.artist', 'a')
             ->leftJoin('p.category', 'c')
-            ->addSelect('a', 'c')
+            ->addSelect('c')
             ->orderBy('p.createdAt', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
@@ -51,27 +49,10 @@ class ProjectRepository extends ServiceEntityRepository
     public function findByCategory(int $categoryId): array
     {
         return $this->createQueryBuilder('p')
-            ->leftJoin('p.artist', 'a')
             ->leftJoin('p.category', 'c')
-            ->addSelect('a', 'c')
+            ->addSelect('c')
             ->where('c.id = :categoryId')
             ->setParameter('categoryId', $categoryId)
-            ->orderBy('p.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * Find projects by artist
-     */
-    public function findByArtist(int $artistId): array
-    {
-        return $this->createQueryBuilder('p')
-            ->leftJoin('p.artist', 'a')
-            ->leftJoin('p.category', 'c')
-            ->addSelect('a', 'c')
-            ->where('a.id = :artistId')
-            ->setParameter('artistId', $artistId)
             ->orderBy('p.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
