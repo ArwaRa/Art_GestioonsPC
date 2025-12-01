@@ -13,13 +13,12 @@
         {% if projects %}
             <div class="table-responsive">
                 <table class="table table-hover">
-                    <thead><tr><th>ID</th><th>Titre</th><th>Artiste</th><th>Catégorie</th><th>Date</th><th>Actions</th></tr></thead>
+                    <thead><tr><th>ID</th><th>Titre</th><th>Catégorie</th><th>Date</th><th>Actions</th></tr></thead>
                     <tbody>
                         {% for project in projects %}
                             <tr>
                                 <td>{{ project.id }}</td>
                                 <td><strong>{{ project.title }}</strong></td>
-                                <td>{{ project.artist.name }}</td>
                                 <td><span class="badge bg-primary">{{ project.category.name }}</span></td>
                                 <td>{{ project.createdAt|date('d/m/Y') }}</td>
                                 <td>

@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Artist;
 use App\Entity\Category;
 use App\Entity\Project;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -42,15 +41,6 @@ class ProjectType extends AbstractType
                     'class' => 'form-control'
                 ],
                 'placeholder' => 'Sélectionnez une catégorie'
-            ])
-            ->add('artist', EntityType::class, [
-                'class' => Artist::class,
-                'choice_label' => 'name',
-                'label' => 'Artiste',
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-                'placeholder' => 'Sélectionnez un artiste'
             ])
             ->add('imageFile', FileType::class, [
                 'label' => 'Image du projet',

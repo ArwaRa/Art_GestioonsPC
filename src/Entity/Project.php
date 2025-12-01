@@ -39,10 +39,6 @@ class Project
     #[Assert\NotNull(message: "La catégorie est obligatoire")]
     private ?Category $category = null;
 
-    #[ORM\ManyToOne(inversedBy: 'projects')]
-    #[Assert\NotNull(message: "L'artiste est obligatoire")]
-    private ?Artist $artist = null;
-
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -109,18 +105,6 @@ class Project
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
-
-        return $this;
-    }
-
-    public function getArtist(): ?Artist
-    {
-        return $this->artist;
-    }
-
-    public function setArtist(?Artist $artist): static
-    {
-        $this->artist = $artist;
 
         return $this;
     }
