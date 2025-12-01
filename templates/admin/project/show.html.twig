@@ -23,7 +23,6 @@
                 <tr><th style="width: 200px;">ID</th><td>{{ project.id }}</td></tr>
                 <tr><th>Titre</th><td>{{ project.title }}</td></tr>
                 <tr><th>Description</th><td>{{ project.description }}</td></tr>
-                <tr><th>Artiste</th><td><a href="{{ path('admin_artist_show', {'id': project.artist.id}) }}">{{ project.artist.name }}</a></td></tr>
                 <tr><th>Catégorie</th><td><a href="{{ path('admin_category_show', {'id': project.category.id}) }}">{{ project.category.name }}</a></td></tr>
                 <tr><th>Date de création</th><td>{{ project.createdAt|date('d/m/Y H:i') }}</td></tr>
             </tbody>

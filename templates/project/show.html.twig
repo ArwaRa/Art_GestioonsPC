@@ -54,48 +54,6 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-user-tie"></i> Artiste</h5>
-                </div>
-                <div class="card-body text-center">
-                    {% if project.artist.profileImage %}
-                        <img src="{{ asset('uploads/artists/' ~ project.artist.profileImage) }}"
-                             class="rounded-circle mb-3"
-                             style="width: 150px; height: 150px; object-fit: cover;"
-                             alt="{{ project.artist.name }}">
-                    {% else %}
-                        <div class="mx-auto mb-3" style="width: 150px; height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
-                            <i class="fas fa-user fa-4x"></i>
-                        </div>
-                    {% endif %}
-
-                    <h4>{{ project.artist.name }}</h4>
-
-                    {% if project.artist.biography %}
-                        <p class="text-muted small">
-                            {{ project.artist.biography|slice(0, 100) }}{{ project.artist.biography|length > 100 ? '...' : '' }}
-                        </p>
-                    {% endif %}
-
-                    <a href="{{ path('artist_show', {'id': project.artist.id}) }}" class="btn btn-primary w-100">
-                        <i class="fas fa-eye"></i> Voir le profil complet
-                    </a>
-
-                    {% if project.artist.email %}
-                        <a href="mailto:{{ project.artist.email }}" class="btn btn-outline-secondary w-100 mt-2">
-                            <i class="fas fa-envelope"></i> Contacter
-                        </a>
-                    {% endif %}
-
-                    {% if project.artist.website %}
-                        <a href="{{ project.artist.website }}" target="_blank" class="btn btn-outline-secondary w-100 mt-2">
-                            <i class="fas fa-globe"></i> Site web
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
-
             <div class="card">
                 <div class="card-header bg-secondary text-white">
                     <h5 class="mb-0"><i class="fas fa-share-alt"></i> Partager</h5>
@@ -118,33 +76,5 @@
         </div>
     </div>
 
-    {% if related_projects %}
-        <div class="mt-5">
-            <h3 class="mb-4"><i class="fas fa-folder"></i> Autres projets de {{ project.artist.name }}</h3>
-            <div class="row g-4">
-                {% for related in related_projects %}
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card h-100">
-                            {% if related.image %}
-                                <img src="{{ asset('uploads/projects/' ~ related.image) }}"
-                                     class="card-img-top"
-                                     alt="{{ related.title }}">
-                            {% else %}
-                                <div class="card-img-top bg-gradient" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 200px; display: flex; align-items: center; justify-content: center; color: white;">
-                                    <i class="fas fa-image fa-3x"></i>
-                                </div>
-                            {% endif %}
-                            <div class="card-body">
-                                <h6 class="card-title">{{ related.title }}</h6>
-                                <a href="{{ path('project_show', {'id': related.id}) }}" class="btn btn-sm btn-primary w-100 mt-2">
-                                    <i class="fas fa-eye"></i> Voir
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
 </div>
 {% endblock %}

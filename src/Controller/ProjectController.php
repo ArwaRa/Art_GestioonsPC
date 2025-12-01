@@ -34,22 +34,10 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/{id}', name: 'show', requirements: ['id' => '\d+'])]
-    public function show(Project $project, ProjectRepository $projectRepository): Response
+    public function show(Project $project): Response
     {
-        // Get other projects from the same artist
-        $relatedProjects = $projectRepository->findByArtist($project->getArtist()->getId());
-
-        // Remove current project from related projects
-        $relatedProjects = array_filter($relatedProjects, function($p) use ($project) {
-            return $p->getId() !== $project->getId();
-        });
-
-        // Limit to 4 related projects
-        $relatedProjects = array_slice($relatedProjects, 0, 4);
-
         return $this->render('project/show.html.twig', [
             'project' => $project,
-            'related_projects' => $relatedProjects,
         ]);
     }
 }
